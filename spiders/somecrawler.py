@@ -174,8 +174,8 @@ class QuotesSpider(scrapy.Spider):
         ans_list = []
 
         for raw_html in html_list:
-            split_str = '!@#$%^&*()'
-            self.log("[TYPE]" + str(type(raw_html)))
+            split_str = '##SPLIT##'
+            # self.log("[TYPE]" + str(type(raw_html)))
 
             # self.log(str(raw_html))
 
@@ -189,12 +189,12 @@ class QuotesSpider(scrapy.Spider):
             cleantext = re.sub('&gt;', '>', cleantext)
             cleantext = re.sub('<.*?>', ' ', cleantext)
             cleantext = re.sub('\\\\xa0', ' ', cleantext)
+            
 
             cleantext = re.sub('\\\\[A-Za-z]', ' ', cleantext)
+            cleantext = re.sub("\\n", split_str, cleantext)
 
             self.log("[DATA]")
-            
-            
             
             cleantext = str(cleantext).rstrip(" []'")
             cleantext = str(cleantext).lstrip("[] '")
@@ -205,6 +205,7 @@ class QuotesSpider(scrapy.Spider):
                     i+=2
                     self.log("[WORKS]")
                 i+=1
+
             i = 0
             spaceFound = False
             while i < len(cleantext):
@@ -216,11 +217,12 @@ class QuotesSpider(scrapy.Spider):
                     spaceFound = False
                     cleantext = cleantext[:temp] + " " + cleantext[i:]
                 i += 1
+            
 
-            self.log("[CLEANED TEXT]")
-
-        
+           
             l = cleantext.split(split_str)
+            self.log("[CLEANED TEXT]")
+            self.log(str(l))
             # l = [*l, cl]ean
             i = 0
             
@@ -229,7 +231,7 @@ class QuotesSpider(scrapy.Spider):
                     l.pop(i)
                 i += 1
 
-            ans_list += l
+            ans_list+=l
 
         return ans_list
         
@@ -240,9 +242,9 @@ class QuotesSpider(scrapy.Spider):
             newLinks.append("link"+link)
         return newLinks
 
-    def unicode_to_mathjax(self, string):
-        for i in range(len(string)):
-            if string[i]
+    # def unicode_to_mathjax(self, string):
+    #     for i in range(len(string)):
+    #         if string[i]
 
     def writetheanswer(self, works):
         if works:
